@@ -14,7 +14,7 @@ const QUALIFICATION_QUESTIONS = [
   {
     step: 1,
     question: "What is your monthly budget for this solution?",
-    options: ["Under Ksh 10,000", "Ksh 10,000 – 50,000", "Above Ksh 50,000"],
+    options: ["Under $100", "$100 – $500", "Above $500"],
     field: "monthlyBudget",
   },
   {
@@ -49,9 +49,9 @@ function calculateLeadScore(lead: {
 
   // Budget scoring
   if (lead.monthlyBudget) {
-    if (lead.monthlyBudget.includes("Above Ksh 50,000") || lead.monthlyBudget.includes("Above")) {
+    if (lead.monthlyBudget.includes("Above $500") || lead.monthlyBudget.includes("Above")) {
       score += 40;
-    } else if (lead.monthlyBudget.includes("10,000 – 50,000") || lead.monthlyBudget.includes("10k–50k")) {
+    } else if (lead.monthlyBudget.includes("$100 – $500") || lead.monthlyBudget.includes("100 – 500")) {
       score += 25;
     } else {
       score += 10;

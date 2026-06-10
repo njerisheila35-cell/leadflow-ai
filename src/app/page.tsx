@@ -149,6 +149,9 @@ export default function Home() {
             <a href="#how-it-works" className="hover:text-purple-600 transition-colors">
               How It Works
             </a>
+            <a href="/pricing" className="hover:text-purple-600 transition-colors">
+              Pricing
+            </a>
             <a
               href="/dashboard"
               className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium"

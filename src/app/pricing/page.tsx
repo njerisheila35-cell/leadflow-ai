@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Zap, CheckCircle2 } from "lucide-react";
 
 const plans = [
@@ -16,7 +15,7 @@ const plans = [
       "Email chat widget",
       "Basic dashboard",
     ],
-    paypalLink: "https://www.paypal.com/ncp/payment/",
+    paypalLink: "https://www.paypal.com/ncp/payment/MAWWSFDGVBXVL",
     popular: false,
   },
   {
@@ -32,7 +31,7 @@ const plans = [
       "Calendar booking integration",
       "Daily email summaries",
     ],
-    paypalLink: "https://www.paypal.com/ncp/payment/",
+    paypalLink: "https://www.paypal.com/ncp/payment/WLU4HZYKHTXWW",
     popular: true,
   },
   {
@@ -49,13 +48,12 @@ const plans = [
       "API access",
       "Dedicated account manager",
     ],
-    paypalLink: "https://www.paypal.com/ncp/payment/",
+    paypalLink: "https://www.paypal.com/ncp/payment/H576GMJ3WBH6E",
     popular: false,
   },
 ];
 
 export default function PricingPage() {
-  const [selected, setSelected] = useState<string | null>(null);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
@@ -128,34 +126,18 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <form
-                action="https://www.paypal.com/ncp/payment/"
-                method="post"
+              <a
+                href={plan.paypalLink}
                 target="_blank"
+                rel="noopener noreferrer"
+                className={`block w-full py-3 rounded-xl font-medium text-sm text-center transition-all ${
+                  plan.popular
+                    ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
+                    : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
+                }`}
               >
-                <input
-                  type="hidden"
-                  name="business"
-                  value="your-paypal-email@example.com"
-                />
-                <input type="hidden" name="item_name" value={`LeadFlow AI - ${plan.name}`} />
-                <input
-                  type="hidden"
-                  name="amount"
-                  value={plan.price.replace("$", "")}
-                />
-                <input type="hidden" name="currency_code" value="USD" />
-                <button
-                  type="submit"
-                  className={`w-full py-3 rounded-xl font-medium text-sm transition-all ${
-                    plan.popular
-                      ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white hover:from-purple-700 hover:to-purple-800"
-                      : "bg-gray-50 text-gray-700 border border-gray-200 hover:bg-gray-100"
-                  }`}
-                >
-                  Subscribe via PayPal
-                </button>
-              </form>
+                Subscribe via PayPal
+              </a>
             </div>
           ))}
         </div>

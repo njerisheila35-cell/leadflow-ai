@@ -1,6 +1,5 @@
 import { action } from "./_generated/server";
 import { v } from "convex/values";
-import { Resend } from "resend";
 
 export const sendEmail = action({
   args: {
@@ -18,20 +17,27 @@ export const sendEmail = action({
       return { success: false, error: "RESEND_API_KEY is not set" };
     }
 
-    const resend = new Resend(resendApiKey);
-
     try {
-      const { data, error } = await resend.emails.send({
-        from: "LeadFlow AI <onboarding@resend.dev>",
-        to: [to],
-        subject: subject,
-        text: text,
-        html: html || text.replace(/\n/g, "<br>"),
+      const response = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${resendApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: "LeadFlow AI <onboarding@resend.dev>",
+          to: [to],
+          subject: subject,
+          text: text,
+          html: html || text.replace(/\n/g, "<br>"),
+        }),
       });
 
-      if (error) {
-        console.error("Resend API error:", error);
-        return { success: false, error: error.message };
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error("Resend API error:", data);
+        return { success: false, error: data.message || "Failed to send email" };
       }
 
       console.log("Email sent successfully:", data);

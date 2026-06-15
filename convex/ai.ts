@@ -14,7 +14,7 @@ const QUALIFICATION_QUESTIONS = [
   {
     step: 1,
     question: "What is your monthly budget for this solution?",
-    options: ["Under $100", "$100 – $500", "Above $500"],
+    options: ["Under Ksh 10,000", "Ksh 10,000 – 50,000", "Above Ksh 50,000"],
     field: "monthlyBudget",
   },
   {
@@ -49,9 +49,9 @@ function calculateLeadScore(lead: {
 
   // Budget scoring
   if (lead.monthlyBudget) {
-    if (lead.monthlyBudget.includes("Above $500") || lead.monthlyBudget.includes("Above")) {
+    if (lead.monthlyBudget.includes("Above Ksh 50,000") || lead.monthlyBudget.includes("Above")) {
       score += 40;
-    } else if (lead.monthlyBudget.includes("$100 – $500") || lead.monthlyBudget.includes("100 – 500")) {
+    } else if (lead.monthlyBudget.includes("10,000 – 50,000") || lead.monthlyBudget.includes("10k–50k")) {
       score += 25;
     } else {
       score += 10;
@@ -139,6 +139,17 @@ Return ONLY the email body text, no subject line, no JSON.`;
         content: message,
       });
 
+      // Send the actual email via Resend
+      const lead = await ctx.runQuery(api.leads.getLead, { id: args.leadId });
+      if (lead && lead.email) {
+        await ctx.runAction(api.email.sendEmail, {
+          to: lead.email,
+          subject: "Welcome to LeadFlow AI",
+          text: message,
+          html: message.replace(/\n/g, "<br>"),
+        });
+      }
+
       return { success: true, message };
     } catch (error: any) {
       // Fallback to template
@@ -149,6 +160,17 @@ Return ONLY the email body text, no subject line, no JSON.`;
         role: "ai",
         content: fallback,
       });
+
+      // Send fallback email
+      const lead = await ctx.runQuery(api.leads.getLead, { id: args.leadId });
+      if (lead && lead.email) {
+        await ctx.runAction(api.email.sendEmail, {
+          to: lead.email,
+          subject: "Welcome to LeadFlow AI",
+          text: fallback,
+          html: fallback.replace(/\n/g, "<br>"),
+        });
+      }
 
       return { success: true, message: fallback, fallback: true };
     }

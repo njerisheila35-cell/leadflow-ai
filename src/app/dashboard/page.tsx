@@ -10,6 +10,7 @@ import {
   Calendar,
   Users,
   Search,
+  LogOut,
 } from "lucide-react";
 
 type Lead = {
@@ -120,6 +121,12 @@ export default function Dashboard() {
             className="text-sm text-purple-600 hover:text-purple-700 font-medium"
           >
             ← Back to Site
+          </a>
+          <a
+            href="/login?logout=true"
+            className="text-sm text-gray-400 hover:text-red-500 font-medium flex items-center gap-1"
+          >
+            <LogOut className="w-3.5 h-3.5" /> Logout
           </a>
         </div>
       </header>
